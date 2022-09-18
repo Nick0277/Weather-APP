@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="index.css">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Mukta&display=swap" rel="stylesheet">
+   <link href="./Media/favicon.ico" rel="icon" type="image/x-icon" />
+   <title>Weather Forecast</title>
+</head>
+
+<body>
+   <div class="container">
+      <div class="template">
+         <div class="celsiusToFahrenheit">
+            <span class="celsius">C</span>
+            <input type="checkbox" class="switcher">
+            <span class="sliderBall"></span>
+            <span class="fahrenheit">F</span>
+         </div>
+         <div id="search">
+            <input class="typeCity" type="text">
+            <button class="submit"></button>
+         </div>
+         <div class="screen">
+            <div class="information">
+               <div class="temperature">
+                  <span class="temperatureNum"></span>
+                  <span class="gradus">&#176;</span>
+               </div>
+               <div class="condition">
+               </div>
+               <div class="cityName">
+               </div>
+               <div class="date">
+               </div>
+               <div class="weatherForecast">
+                  <div class="dailyForecast">
+                     <ul>
+                        <li>
+                           <p class="weekDays"></p>
+                           <img class="forecastIcon" alt="">
+                           <span class="highestTemperature"></span>
+                           <span class="lowestTemperature"></span>
+                        </li>
+                        <li>
+                           <p class="weekDays"></p>
+                           <img class="forecastIcon" src="" alt="">
+                           <span class="highestTemperature"></span>
+                           <span class="lowestTemperature"></span>
+                        </li>
+                        <li>
+                           <p class="weekDays"></p>
+                           <img class="forecastIcon" src="" alt="">
+                           <span class="highestTemperature"></span>
+                           <span class="lowestTemperature"></span>
+                        </li>
+                        <li>
+                           <p class="weekDays"></p>
+                           <img class="forecastIcon" src="" alt="">
+                           <span class="highestTemperature"></span>
+                           <span class="lowestTemperature"></span>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <script src="app.js"></script>
+</body>
+
+</html>
