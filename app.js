@@ -54,7 +54,6 @@ submit.addEventListener('click', () => {
             return Response.json()
          })
          .then(data => {
-            console.log(data)
             const { temp_c, temp_f } = data.current;
             const { text } = data.current.condition;
             const { name, localtime } = data.location;
@@ -148,7 +147,6 @@ submit.addEventListener('click', () => {
                return Response.json()
             })
             .then(data => {
-               console.log(data)
                const dateCheck = new Date();
                let day = dateCheck.getDay();
                weekdays.forEach(element => {
