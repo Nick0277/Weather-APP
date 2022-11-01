@@ -41,7 +41,7 @@ submit.addEventListener('click', () => {
 
 
 submit.addEventListener('click', () => {
-   let apiKey = "34ca2bfe172742068b681234221309";
+   let apiKey = "f9bd906efdd14544b8d165104220111";
    let api = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${typeCity.value}&aqi=no`
 
    let futureWeatherApiKey = "0883def437524c4d8f9596bc23c871d1";
