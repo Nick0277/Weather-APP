@@ -12,8 +12,6 @@ const template = document.querySelector(".template");
 const switcher = document.querySelector(".switcher");
 const sliderBall = document.querySelector(".sliderBall");
 
-const monthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
-   'November', 'December'];
 const weekDayList = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const cities = ['london', 'paris', 'new york', 'moscow', 'dubai', 'tokyo', 'singapore', 'los angeles', 'barcelona', 'madrid', 'rome', 'doha',
@@ -41,112 +39,72 @@ submit.addEventListener('click', () => {
 
 
 submit.addEventListener('click', () => {
-   let apiKey = "f9bd906efdd14544b8d165104220111";
-   let api = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${typeCity.value}&aqi=no`
-
    let futureWeatherApiKey = "0883def437524c4d8f9596bc23c871d1";
    let futureWeatherApi = `https://api.weatherbit.io/v2.0/forecast/daily?city=${typeCity.value}&key=${futureWeatherApiKey}`;
-
+   let currentCityTimeAPI = "566fbac33ef840c5ba0880df22286b87";
+   let currentCityTime = `https://api.ipgeolocation.io/timezone?apiKey=${currentCityTimeAPI}&location=${typeCity.value}`;
    if (typeCity.value !== "") {
       typeCity.value = "";
-      fetch(api)
+      fetch(currentCityTime)
          .then(Response => {
             return Response.json()
          })
          .then(data => {
-            const { temp_c, temp_f } = data.current;
-            const { text } = data.current.condition;
-            const { name, localtime } = data.location;
-            displayTemperature.innerHTML = Math.round(temp_c);
-            condition.innerText = text;
-            cityName.innerText = name.toUpperCase();
-            setCurrentTime();
-            checkFourDayForecast();
-
-            switcher.addEventListener('click', () => {
-               if (switcher.checked) {
-                  sliderBall.style.transform = "translateX(12px)";
-                  displayTemperature.innerHTML = Math.round(temp_f);
-               }
-               else {
-                  sliderBall.style.transform = "";
-                  displayTemperature.innerHTML = Math.round(temp_c);
-               }
-            });
-
-            function setCurrentTime() {
-               let day = localtime.slice(8, 10);
-               let month = localtime.slice(5, 7);
-               let time = localtime.slice(11, 16);
+            const date = data.date_time_txt;
+            let dateArray = date.split(" ");
+            let month = dateArray[1];
+            let day = dateArray[2].slice(0, 2);
+            let time = dateArray[4].slice(0, 5);
+            currentTime.innerText = `${month} ${day} - ${time}`;
+            setBackground();
+            function setBackground() {
                let partsOfTheDay = parseInt(time.substring(0, 2));
-
                if (partsOfTheDay >= 0) {
                   template.style.backgroundImage = "url(./Media/lateNightBackground.png)";
-                  if (text.includes("rain")) {
+                  if (condition.innerText.includes("rain")) {
                      template.style.backgroundImage = "url(./Media/rain.png), url(./Media/lateNightBackground.png)";
                   }
                }
                if (partsOfTheDay > 5) {
                   template.style.backgroundImage = "url(./Media/morningBackgroundD.png)";
-                  if (text.includes("rain")) {
+                  if (condition.innerText.includes("rain")) {
                      template.style.backgroundImage = "url(./Media/rain.png), url(./Media/morningBackgroundD.png)";
                   }
                }
                if (partsOfTheDay > 12) {
                   template.style.backgroundImage = "url(./Media/noonBackground.png)";
-                  if (text.includes("rain")) {
+                  if (condition.innerText.includes("rain")) {
                      template.style.backgroundImage = "url(./Media/rain.png), url(./Media/noonBackground.png)";
                   }
                }
                if (partsOfTheDay > 16) {
                   template.style.backgroundImage = "url(./Media/eveningBackground.png)";
-                  if (text.includes("rain")) {
+                  if (condition.innerText.includes("rain")) {
                      template.style.backgroundImage = "url(./Media/rain.png), url(./Media/eveningBackground.png)";
                   }
                }
                if (partsOfTheDay > 19) {
                   template.style.backgroundImage = "url(./Media/nightBackground.png)";
-                  if (text.includes("rain")) {
+                  if (condition.innerText.includes("rain")) {
                      template.style.backgroundImage = "url(./Media/rain.png), url(./Media/nightBackground.png)";
                   }
                }
-
-               switch (month) {
-                  case "01": currentTime.innerText = `${monthList[0]} ${day} - ${time}`;
-                     break;
-                  case "02": currentTime.innerText = `${monthList[1]} ${day} - ${time}`;
-                     break;
-                  case "03": currentTime.innerText = `${monthList[2]} ${day} - ${time}`;
-                     break;
-                  case "04": currentTime.innerText = `${monthList[3]} ${day} - ${time}`;
-                     break;
-                  case "05": currentTime.innerText = `${monthList[4]} ${day} - ${time}`;
-                     break;
-                  case "06": currentTime.innerText = `${monthList[5]} ${day} - ${time}`;
-                     break;
-                  case "07": currentTime.innerText = `${monthList[6]} ${day} - ${time}`;
-                     break;
-                  case "08": currentTime.innerText = `${monthList[7]} ${day} - ${time}`;
-                     break;
-                  case "09": currentTime.innerText = `${monthList[8]} ${day} - ${time}`;
-                     break;
-                  case "10": currentTime.innerText = `${monthList[9]} ${day} - ${time}`;
-                     break;
-                  case "11": currentTime.innerText = `${monthList[10]} ${day} - ${time}`;
-                     break;
-                  case "12": currentTime.innerText = `${monthList[11]} ${day} - ${time}`;
-                     break;
-               }
             }
          })
-         .catch(err => console.log("ERROR!"))
+      checkFullForecast();
 
-      function checkFourDayForecast() {
+      function checkFullForecast() {
          fetch(futureWeatherApi)
             .then(Response => {
                return Response.json()
             })
             .then(data => {
+               const temp_c = data.data[0].temp;
+               const text = data.data[0].weather.description;
+               const name = data.city_name;
+               displayTemperature.innerHTML = Math.round(temp_c);
+               condition.innerText = text;
+               cityName.innerText = name.toUpperCase();
                const dateCheck = new Date();
                let day = dateCheck.getDay();
                weekdays.forEach(element => {
@@ -170,8 +128,18 @@ submit.addEventListener('click', () => {
                      }
                   });
                }
+               switcher.addEventListener('click', () => {
+                  if (switcher.checked) {
+                     sliderBall.style.transform = "translateX(12px)";
+                     displayTemperature.innerHTML = Math.round(temp_c * 1.8 + 32);
+                  }
+                  else {
+                     sliderBall.style.transform = "";
+                     displayTemperature.innerHTML = Math.round(temp_c * 1.8 + 32);
+                  }
+               });
             })
-            .catch(err => console.log("ERROR"))
+            .catch(err => console.log("ERROR"));
       }
    }
-})
+});
