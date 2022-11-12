@@ -135,7 +135,7 @@ submit.addEventListener('click', () => {
                   }
                   else {
                      sliderBall.style.transform = "";
-                     displayTemperature.innerHTML = Math.round(temp_c * 1.8 + 32);
+                     displayTemperature.innerHTML = Math.round(temp_c);
                   }
                });
             })
